@@ -1,13 +1,26 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@import url("../node_modules/tailwindcss/dist/tailwind.css");
+
+.body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans",
+        "Droid Sans", "Helvetica Neue", sans-serif;
+    max-width: 1200px;
+    min-width: 400px;
+    @apply mx-auto;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+.btn {
+    @apply rounded px-5 py-3 font-semibold;
+}
+.w-500 {
+    width: 500px;
+}
+
+th, td {
+    border: 2px solid black;
+    padding: 1rem;
+}
+
+td > i {
+    font-size: 2rem;
 }
