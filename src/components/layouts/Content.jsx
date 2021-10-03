@@ -1,6 +1,6 @@
 import { Redirect, Route, Switch } from "react-router";
-import { routes } from "../../../config/routes";
-import { useAppContext } from "../../../contexts/AppContext";
+import { routes } from "../../config/routes";
+import { useAppContext } from "../../contexts/AppContext";
 
 function Content() {
     const { auth } = useAppContext();

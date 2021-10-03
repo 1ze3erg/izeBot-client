@@ -23,43 +23,43 @@ function Profile() {
             <div className="col-span-3 bg-gray-400 flex justify-center items-center p-10 lg:row-span-2 lg:col-span-3 md:p-0">
                 <form className="w-full bg-indigo-900 text-white border-4 border-indigo-400 ring-4 ring-indigo-400 rounded-lg p-10 flex flex-col justify-center items-center">
                     <div className="w-full mb-5 flex flex-col">
-                        <label for="fname" className="mb-2">
+                        <label htmlFor="fname" className="mb-2">
                             Firstname
                         </label>
                         <input type="text" name="fname" id="fname" className="p-3 text-black rounded-md" />
                     </div>
                     <div className="w-full mb-5 flex flex-col">
-                        <label for="lname" className="mb-2">
+                        <label htmlFor="lname" className="mb-2">
                             Lastname
                         </label>
                         <input type="text" name="lname" id="lname" className="p-3 text-black rounded-md" />
                     </div>
                     <div className="w-full mb-5 flex flex-col">
-                        <label for="email" className="mb-2">
+                        <label htmlFor="email" className="mb-2">
                             Email
                         </label>
                         <input type="email" name="email" id="email" className="p-3 text-black rounded-md" />
                     </div>
                     <div className="w-full mb-5 flex flex-col">
-                        <label for="phone" className="mb-2">
+                        <label htmlFor="phone" className="mb-2">
                             Phone Number
                         </label>
                         <input type="tel" name="phone" id="phone" className="p-3 text-black rounded-md" />
                     </div>
                     <div className="w-full mb-5 flex flex-col">
-                        <label for="address" className="mb-2">
+                        <label htmlFor="address" className="mb-2">
                             Address
                         </label>
                         <input type="text" name="address" id="address" className="p-3 text-black rounded-md" />
                     </div>
                     <div className="w-full mb-5 flex flex-col">
-                        <label for="country" className="mb-2">
+                        <label htmlFor="country" className="mb-2">
                             Country
                         </label>
                         <input type="text" name="country" id="country" className="p-3 text-black rounded-md" />
                     </div>
                     <div className="w-full mb-8 flex flex-col">
-                        <label for="postal" className="mb-2">
+                        <label htmlFor="postal" className="mb-2">
                             Postal Code
                         </label>
                         <input type="text" name="postal" id="postal" className="p-3 text-black rounded-md" />

@@ -37,9 +37,12 @@ const routes = {
     ],
 };
 
-function createMenu(auth, setAuth) {
+function createMenu(auth) {
     const leftMenu = auth
-        ? [{ name: "Docs", bgColor: "bg-indigo-700", textColor: "text-white", to: "/docs" }]
+        ? [
+              { name: "Docs", bgColor: "bg-indigo-700", textColor: "text-white", to: "/docs" },
+              { name: "Dashboard", bgColor: "bg-indigo-700", textColor: "text-white", to: "/dashboard" },
+          ]
         : [
               { name: "Docs", bgColor: "bg-indigo-700", textColor: "text-white", to: "/docs" },
               { name: "Try izeBot", bgColor: "bg-indigo-700", textColor: "text-white", to: "/try-bot" },
@@ -51,7 +54,6 @@ function createMenu(auth, setAuth) {
                   bgColor: "bg-indigo-700",
                   textColor: "text-white",
                   to: "/login",
-                  onClick: () => setAuth(false),
               },
           ]
         : [
@@ -69,6 +71,6 @@ const sidebarMenu = [
     { name: "Preview Bot test", to: "/preview-bot-test", icon: "fa-comments" },
     { name: "Chat Logs", to: "/chat-logs", icon: "fa-database" },
     { name: "Intregrations", to: "/intregrations", icon: "fa-link" },
-]
+];
 
 export { routes, createMenu, sidebarMenu };

@@ -1,9 +1,19 @@
 import { Link } from "react-router-dom";
+import { useAppContext } from "../../../contexts/AppContext";
+import { removeToken } from "../../../helpers/localStorage";
 
-function MenuButton({ name, bgColor, textColor, to, onClick }) {
+function MenuButton({ name, bgColor, textColor, to }) {
+    const { setAuth } = useAppContext();
+
+    const clickSignOut = () => {
+        if (name === "Sign out") {
+            setAuth(false);
+            removeToken();
+        }
+    }
     return (
         <Link to={to}>
-            <li className="mr-5 md:mr-0 md:border-b-2" onClick={onClick}>
+            <li className="mr-5 md:mr-0 md:border-b-2" onClick={clickSignOut}>
                 <button className={`btn ${bgColor} ${textColor} md:w-full md:rounded-none`}>{name}</button>
             </li>
         </Link>

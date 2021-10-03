@@ -24,3 +24,8 @@ th, td {
 td > i {
     font-size: 2rem;
 }
+
+/* .err-feedback {
+    @apply border-2 border-red-500;
+    background-image: url();
+} */

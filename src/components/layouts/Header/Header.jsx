@@ -3,7 +3,6 @@ import { IZECHAT_URL } from "../../../config/env";
 import { createMenu } from "../../../config/routes";
 import { useAppContext } from "../../../contexts/AppContext";
 import Brand from "./Brand";
-import Menu from "./Menu";
 import MenuButton from "./MenuButton";
 import MenuLink from "./MenuLink";
 
@@ -15,7 +14,6 @@ function Header() {
             <ul className="flex justify-center items-center md:flex-col md:items-stretch">
                 <div className="flex flex-grow items-center md:flex-col md:items-stretch">
                     <Brand name="izeBot" />
-                    {!auth && <Menu name="Home" textColor="text-white" />}
                     {leftMenu.map((elem, idx) => (
                         <MenuButton
                             name={elem.name}
