@@ -1,7 +1,30 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import axios from "../../config/axios";
 import Sidebar from "../layouts/Sidebar/Sidebar";
 
 function Timers() {
+    const [timers, setTimers] = useState([]);
+
+    const th = [
+        { name: "Status", width: "w-0.5/12" },
+        { name: "Timer Name", width: "w-1/12" },
+        { name: "Response", width: "w-9/12" },
+        { name: "Interval (mins)", width: "w-1/12" },
+        { name: "Actions", width: "w-0.5/12" },
+    ];
+
+    useEffect(() => {
+        axios
+            .get("/timers")
+            .then((res) => {
+                setTimers(res.data);
+            })
+            .catch((err) => {
+                console.dir(err);
+            });
+    }, []);
+
     return (
         <div className="grid grid-cols-5 lg:grid-cols-1 md:contents">
             <Sidebar />
@@ -34,113 +57,45 @@ function Timers() {
                     </div>
                 </div>
 
-                <table className="block mx-auto text-center table-auto bg-white md:overflow-auto">
+                <table className="block mx-auto text-center bg-white md:overflow-auto">
                     <thead>
                         <tr className="text-xl">
-                            <th className="w-0.5/12 font-semibold">Status</th>
-                            <th className="w-1/12 font-semibold">Timer Name</th>
-                            <th className="w-9/12 font-semibold">Response</th>
-                            <th className="w-1/12 font-semibold">Interval</th>
-                            <th className="w-0.5/12 font-semibold">Actions</th>
+                            {th.map((elem, idx) => (
+                                <th key={idx} className={`${elem.width} font-semibold text-xl`}>
+                                    {elem.name}
+                                </th>
+                            ))}
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>
-                                <i className="fas fa-toggle-on"></i>
-                            </td>
-                            <td>Timer1</td>
-                            <td>Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate, veniam!</td>
-                            <td>15 mins</td>
-                            <td>
-                                <button>
-                                    <i className="far fa-edit"></i>
-                                </button>
-                                <button>
-                                    <i className="fas fa-trash"></i>
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <i className="fas fa-toggle-off"></i>
-                            </td>
-                            <td>Timer2</td>
-                            <td>Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate, veniam!</td>
-                            <td>30 mins</td>
-                            <td>
-                                <button>
-                                    <i className="far fa-edit"></i>
-                                </button>
-                                <button>
-                                    <i className="fas fa-trash"></i>
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <i className="fas fa-toggle-on"></i>
-                            </td>
-                            <td>Timer3</td>
-                            <td>Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate, veniam!</td>
-                            <td>45 mins</td>
-                            <td>
-                                <button>
-                                    <i className="far fa-edit"></i>
-                                </button>
-                                <button>
-                                    <i className="fas fa-trash"></i>
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <i className="fas fa-toggle-off"></i>
-                            </td>
-                            <td>Timer4</td>
-                            <td>Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate, veniam!</td>
-                            <td>60 mins</td>
-                            <td>
-                                <button>
-                                    <i className="far fa-edit"></i>
-                                </button>
-                                <button>
-                                    <i className="fas fa-trash"></i>
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <i className="fas fa-toggle-on"></i>
-                            </td>
-                            <td>Timer5</td>
-                            <td>Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate, veniam!</td>
-                            <td>90 mins</td>
-                            <td>
-                                <button>
-                                    <i className="far fa-edit"></i>
-                                </button>
-                                <button>
-                                    <i className="fas fa-trash"></i>
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <i className="fas fa-toggle-off"></i>
-                            </td>
-                            <td>Timer6</td>
-                            <td>Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate, veniam!</td>
-                            <td>120 mins</td>
-                            <td>
-                                <button>
-                                    <i className="far fa-edit"></i>
-                                </button>
-                                <button>
-                                    <i className="fas fa-trash"></i>
-                                </button>
-                            </td>
-                        </tr>
+                        {timers.map((elem) => {
+                            return (
+                                <tr>
+                                    <td>
+                                        <button className="text-3xl">
+                                            <i className={`fas fa-toggle-${elem.status ? "on" : "off"}`}></i>
+                                        </button>
+                                    </td>
+                                    <td>
+                                        <p className="text-lg">{elem.timerName}</p>
+                                    </td>
+                                    <td>
+                                        <p className="text-lg">{elem.response}</p>
+                                    </td>
+                                    <td>
+                                        <p className="text-lg">{elem.interval / 60000}</p>
+                                    </td>
+                                    <td>
+                                        <button className="text-xl mr-4">
+                                            <i className="far fa-edit"></i>
+                                        </button>
+                                        <button className="text-xl">
+                                            <i className="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            );
+                        })}
                     </tbody>
                 </table>
 
