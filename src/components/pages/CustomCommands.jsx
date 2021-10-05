@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useHistory } from "react-router";
+import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import axios from "../../config/axios";
 import { useContentContext } from "../../contexts/ContentContext";
@@ -10,13 +10,12 @@ import Thead from "../ui/Table/Thead";
 
 function CustomCommands() {
     const { customCommands, setCustomCommands } = useContentContext();
-    const history = useHistory();
 
     const th = [
         { name: "Status", width: "w-1/12" },
         { name: "Command", width: "w-1/12" },
-        { name: "Response", width: "w-7/12" },
-        { name: "Actions", width: "w-3/12" },
+        { name: "Response", width: "w-8/12" },
+        { name: "Actions", width: "w-2/12" },
     ];
 
     useEffect(() => {
@@ -107,12 +106,11 @@ function CustomCommands() {
             <div className="col-span-4 bg-gray-400 p-5">
                 <h1 className="text-center text-5xl font-semibold py-5">Custom Commands</h1>
 
-                <button
-                    className="btn rounded-md bg-indigo-900 text-white my-5"
-                    onClick={() => history.push("/command-form")}
-                >
-                    <i className="fas fa-plus"></i> Add Command
-                </button>
+                <Link to="/command-form">
+                    <button className="btn rounded-md bg-indigo-900 text-white my-5">
+                        <i className="fas fa-plus"></i> Add Command
+                    </button>
+                </Link>
 
                 <div className="flex justify-between mb-2 md:flex-col">
                     <div

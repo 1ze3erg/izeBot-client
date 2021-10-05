@@ -13,7 +13,7 @@ function CommandForm() {
     const history = useHistory();
 
     const handleChangeInput = (e) => {
-        if (e.target.value.trim() === "") {
+        if (e.target.name !== "description" && e.target.value.trim() === "") {
             setErr((currentState) => ({ ...currentState, [e.target.name]: `${e.target.name} is required` }));
             setCustom((currentState) => ({ ...currentState, [e.target.name]: "" }));
         } else {
@@ -99,7 +99,6 @@ function CommandForm() {
                                 value={custom.description}
                                 onChange={handleChangeInput}
                             />
-                            {err.description && <ErrFeedback err={err.description} />}
                         </div>
                         <div className="flex justify-between w-full">
                             <button type="submit" className="btn bg-green-600 w-full text-center mr-2">

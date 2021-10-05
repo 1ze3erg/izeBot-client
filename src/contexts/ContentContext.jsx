@@ -4,7 +4,8 @@ const ContentContext = createContext();
 
 function ContenProvider({ children }) {
     const [customCommands, setCustomCommands] = useState([]);
-    return <ContentContext.Provider value={{ customCommands, setCustomCommands }}>{children}</ContentContext.Provider>;
+    const [timers, setTimers] = useState([]);
+    return <ContentContext.Provider value={{ customCommands, setCustomCommands, timers, setTimers }}>{children}</ContentContext.Provider>;
 }
 
 function useContentContext() {

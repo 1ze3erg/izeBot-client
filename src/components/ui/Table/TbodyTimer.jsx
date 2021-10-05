@@ -1,7 +1,7 @@
-function TbodyCustom({ customCommands, clickChangeStatus, clickEditPopUp, clickDelCustom }) {
+function TbodyTimer({ timers, clickDelTimer, clickChangeStatus, clickEditPopUp }) {
     return (
         <tbody>
-            {customCommands.map((elem) => {
+            {timers.map((elem) => {
                 return (
                     <tr key={elem.id}>
                         <td>
@@ -10,23 +10,34 @@ function TbodyCustom({ customCommands, clickChangeStatus, clickEditPopUp, clickD
                             </button>
                         </td>
                         <td>
-                            <p className="text-lg">{elem.command}</p>
+                            <p className="text-lg">{elem.timerName}</p>
                         </td>
                         <td>
-                            <span className="text-lg">{elem.response}</span>
+                            <p className="text-lg">{elem.response}</p>
+                        </td>
+                        <td>
+                            <p className="text-lg">{elem.interval / 60000}</p>
                         </td>
                         <td>
                             <button
                                 className="text-lg block"
-                                onClick={() => clickEditPopUp(elem.id, "Enter Command", "Command", elem.command)}
+                                onClick={() => clickEditPopUp(elem.id, "Enter TimerName", "TimerName", elem.timerName)}
                             >
-                                <i className="fas fa-pencil-alt" title="edit command"> Command</i>
+                                <i className="fas fa-pencil-alt"> TimerName</i>
                             </button>
                             <button
                                 className="text-lg block"
                                 onClick={() => clickEditPopUp(elem.id, "Enter Response", "Response", elem.response)}
                             >
-                                <i className="fas fa-pen" title="edit response"> Response</i>
+                                <i className="fas fa-pen"> Response</i>
+                            </button>
+                            <button
+                                className="text-lg block"
+                                onClick={() =>
+                                    clickEditPopUp(elem.id, "Enter Interval (mins)", "Interval", elem.interval)
+                                }
+                            >
+                                <i className="fas fa-marker"> Interval</i>
                             </button>
                             <button
                                 className="text-lg block"
@@ -34,10 +45,10 @@ function TbodyCustom({ customCommands, clickChangeStatus, clickEditPopUp, clickD
                                     clickEditPopUp(elem.id, "Enter Description", "Description", elem.description)
                                 }
                             >
-                                <i className="fas fa-edit" title="edit description"> Description</i>
+                                <i className="fas fa-edit"> Description</i>
                             </button>
-                            <button className="text-lg block" onClick={() => clickDelCustom(elem.id)}>
-                                <i className="fas fa-trash" title="delete"> Delete</i>
+                            <button className="text-lg block" onClick={() => clickDelTimer(elem.id)}>
+                                <i className="fas fa-trash"> Timer</i>
                             </button>
                         </td>
                     </tr>
@@ -47,4 +58,4 @@ function TbodyCustom({ customCommands, clickChangeStatus, clickEditPopUp, clickD
     );
 }
 
-export default TbodyCustom;
+export default TbodyTimer;

@@ -1,17 +1,22 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
+import Swal from "sweetalert2";
 import axios from "../../config/axios";
+import { useContentContext } from "../../contexts/ContentContext";
 import Sidebar from "../layouts/Sidebar/Sidebar";
+import Table from "../ui/Table/Table";
+import TbodyTimer from "../ui/Table/TbodyTimer";
+import Thead from "../ui/Table/Thead";
 
 function Timers() {
-    const [timers, setTimers] = useState([]);
+    const { timers, setTimers } = useContentContext();
 
     const th = [
-        { name: "Status", width: "w-0.5/12" },
+        { name: "Status", width: "w-1/12" },
         { name: "Timer Name", width: "w-1/12" },
-        { name: "Response", width: "w-9/12" },
+        { name: "Response", width: "w-6/12" },
         { name: "Interval (mins)", width: "w-1/12" },
-        { name: "Actions", width: "w-0.5/12" },
+        { name: "Actions", width: "w-3/12" },
     ];
 
     useEffect(() => {
@@ -23,7 +28,84 @@ function Timers() {
             .catch((err) => {
                 console.dir(err);
             });
-    }, []);
+    }, [setTimers]);
+
+    const clickChangeStatus = async (id, status) => {
+        try {
+            await axios.put(`/timers/${id}`, { status: !status });
+            setTimers((currentState) =>
+                currentState.map((elem) => (elem.id === id ? { ...elem, status: !elem.status } : elem))
+            );
+        } catch (err) {
+            console.dir(err);
+        }
+    };
+
+    const clickEditPopUp = async (id, title, label, value) => {
+        const { value: inputValue } = await Swal.fire({
+            title: title,
+            input: "text",
+            inputLabel: label,
+            inputValue: value / 60000,
+            showCancelButton: true,
+            inputValidator: (value) => {
+                if (!value) {
+                    return "You need to write something!";
+                }
+            },
+        });
+        if (inputValue && label === "TimerName") {
+            await axios.put(`/timers/${id}`, { timerName: inputValue });
+            setTimers((currentState) =>
+                currentState.map((elem) => (elem.id === id ? { ...elem, timerName: inputValue } : elem))
+            );
+        }
+        if (inputValue && label === "Response") {
+            await axios.put(`/timers/${id}`, { response: inputValue });
+            setTimers((currentState) =>
+                currentState.map((elem) => (elem.id === id ? { ...elem, response: inputValue } : elem))
+            );
+        }
+        if (inputValue && label === "Interval") {
+            await axios.put(`/timers/${id}`, { interval: `${inputValue * 60000}` });
+            setTimers((currentState) =>
+                currentState.map((elem) => (elem.id === id ? { ...elem, interval: `${inputValue * 60000}` } : elem))
+            );
+        }
+        if (inputValue && label === "Description") {
+            await axios.put(`/timers/${id}`, { description: inputValue });
+            setTimers((currentState) =>
+                currentState.map((elem) => (elem.id === id ? { ...elem, description: inputValue } : elem))
+            );
+        }
+    };
+
+    const clickDelTimer = async (id) => {
+        try {
+            const result = await Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, delete it!",
+            });
+            if (result.isConfirmed) {
+                await axios.delete(`/timers/${id}`);
+                await Swal.fire({
+                    position: "top-end",
+                    icon: "success",
+                    title: "Your timers has been deleted",
+                    showConfirmButton: false,
+                    timer: 1500,
+                });
+                setTimers((currentState) => currentState.filter((elem) => elem.id !== id));
+            }
+        } catch (err) {
+            console.dir(err);
+        }
+    }
 
     return (
         <div className="grid grid-cols-5 lg:grid-cols-1 md:contents">
@@ -57,50 +139,15 @@ function Timers() {
                     </div>
                 </div>
 
-                <table className="block mx-auto text-center bg-white md:overflow-auto">
-                    <thead>
-                        <tr>
-                            {th.map((elem, idx) => (
-                                <th key={idx} className={`${elem.width} font-semibold text-xl`}>
-                                    {elem.name}
-                                </th>
-                            ))}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {timers.map((elem) => {
-                            return (
-                                <tr>
-                                    <td>
-                                        <button className="text-3xl">
-                                            <i className={`fas fa-toggle-${elem.status ? "on" : "off"}`}></i>
-                                        </button>
-                                    </td>
-                                    <td>
-                                        <p className="text-lg">{elem.timerName}</p>
-                                    </td>
-                                    <td>
-                                        <p className="text-lg">{elem.response}</p>
-                                    </td>
-                                    <td>
-                                        <p className="text-lg">{elem.interval / 60000}</p>
-                                    </td>
-                                    <td>
-                                        <button className="text-xl mr-4">
-                                            <i className="far fa-edit"></i>
-                                        </button>
-                                        <button className="text-xl">
-                                            <i className="fas fa-trash"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                            );
-                        })}
-                    </tbody>
-                </table>
+                <Table>
+                    <Thead th={th} />
+                    <TbodyTimer timers={timers} clickDelTimer={clickDelTimer} clickChangeStatus={clickChangeStatus} clickEditPopUp={clickEditPopUp} />
+                </Table>
 
                 <div className="flex justify-between items-center mt-2 md:flex-col">
-                    <span className="md:mb-5 mt-2">Showing 1 to 10 of 50 Commands</span>
+                    <span className="md:mb-5 mt-2">
+                        Showing 1 to {timers.length} of {timers.length} Timers
+                    </span>
                     <ul className="flex text-center md:grid md:grid-cols-4 md:gap-px">
                         <li
                             className="
