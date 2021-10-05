@@ -1,6 +1,27 @@
+import { useEffect, useState } from "react";
+import axios from "../../config/axios";
 import Sidebar from "../layouts/Sidebar/Sidebar";
 
 function ChatLogs() {
+    const [chatLogs, setChatLogs] = useState([]);
+
+    const th = [
+        { name: "Date", width: "w-2/12" },
+        { name: "Chatter", width: "w-1/12" },
+        { name: "Message", width: "w-9/12" },
+    ];
+
+    useEffect(() => {
+        axios
+            .get("/chat-logs")
+            .then((res) => {
+                setChatLogs(res.data);
+            })
+            .catch((err) => {
+                console.dir(err);
+            });
+    }, []);
+
     return (
         <div className="grid grid-cols-5 lg:grid-cols-1 md:contents">
             <Sidebar />
@@ -29,46 +50,22 @@ function ChatLogs() {
 
                 <table className="block mx-auto text-center table-auto bg-white md:overflow-auto">
                     <thead>
-                        <tr className="text-xl">
-                            <th className="w-3/12 font-semibold">Date</th>
-                            <th className="w-2/12 font-semibold">User</th>
-                            <th className="w-7/12 font-semibold">Message</th>
+                        <tr>
+                            {th.map((elem, idx) => (
+                                <th key={idx} className={`${elem.width} font-semibold text-xl`}>
+                                    {elem.name}
+                                </th>
+                            ))}
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>Dec 32, 2022 2:22:22 PM</td>
-                            <td>Someone</td>
-                            <td>!poll</td>
-                        </tr>
-                        <tr>
-                            <td>Dec 32, 2022 2:22:22 PM</td>
-                            <td>Someone</td>
-                            <td>!now</td>
-                        </tr>
-                        <tr>
-                            <td>Dec 32, 2022 2:22:22 PM</td>
-                            <td>Someone</td>
-                            <td>
-                                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Temporibus perspiciatis odit
-                                nobis in corporis maxime iste aspernatur nesciunt alias suscipit.
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Dec 32, 2022 2:22:22 PM</td>
-                            <td>Someone</td>
-                            <td>!commands</td>
-                        </tr>
-                        <tr>
-                            <td>Dec 32, 2022 2:22:22 PM</td>
-                            <td>Someone</td>
-                            <td>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quia, tempore.</td>
-                        </tr>
-                        <tr>
-                            <td>Dec 32, 2022 2:22:22 PM</td>
-                            <td>Someone</td>
-                            <td>Lorem ipsum dolor sit amet.</td>
-                        </tr>
+                        {chatLogs.map((elem) => (
+                            <tr key={elem.id}>
+                                <td>{elem.date}</td>
+                                <td>{elem.chatter}</td>
+                                <td>{elem.message}</td>
+                            </tr>
+                        ))}
                     </tbody>
                 </table>
 

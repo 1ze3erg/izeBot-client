@@ -31,7 +31,6 @@ function Login() {
             e.preventDefault();
             Object.keys(loginInput).forEach((elem) => {
                 if (loginInput[elem] === "") {
-                    console.log(elem);
                     setErr((currentState) => ({ ...currentState, [elem]: `${elem} is required` }));
                 }
             });

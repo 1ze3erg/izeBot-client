@@ -11,6 +11,7 @@ function MenuButton({ name, bgColor, textColor, to }) {
             removeToken();
         }
     }
+    
     return (
         <Link to={to}>
             <li className="mr-5 md:mr-0 md:border-b-2" onClick={clickSignOut}>

@@ -59,7 +59,7 @@ function Timers() {
 
                 <table className="block mx-auto text-center bg-white md:overflow-auto">
                     <thead>
-                        <tr className="text-xl">
+                        <tr>
                             {th.map((elem, idx) => (
                                 <th key={idx} className={`${elem.width} font-semibold text-xl`}>
                                     {elem.name}
