@@ -91,7 +91,7 @@ function CustomCommands() {
                     icon: "success",
                     title: "Your custom commands has been deleted",
                     showConfirmButton: false,
-                    timer: 1500,
+                    timer: 1000,
                 });
                 setCustomCommands((currentState) => currentState.filter((elem) => elem.id !== id));
             }

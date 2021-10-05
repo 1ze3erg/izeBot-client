@@ -43,7 +43,7 @@ function TimerForm() {
                     icon: "success",
                     title: "Your timers has been added",
                     showConfirmButton: false,
-                    timer: 1500,
+                    timer: 1000,
                 });
                 history.push("/timers");
             }

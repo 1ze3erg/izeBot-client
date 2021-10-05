@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { isEmail } from "validator";
 import { useAppContext } from "../../contexts/AppContext";
-import { setToken } from "../../helpers/localStorage";
+import { setAvatar, setToken } from "../../helpers/localStorage";
 import axios from "../../config/axios";
 import ErrFeedback from "../ui/ErrFeedback";
 
@@ -37,6 +37,7 @@ function Login() {
             if (!err.email && !err.password) {
                 const res = await axios.post("/users/login", loginInput);
                 setToken(res.data.token);
+                setAvatar(res.data.avatar);
                 setAuth(true);
             }
         } catch (err) {

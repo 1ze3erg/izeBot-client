@@ -42,41 +42,48 @@ function Timers() {
     };
 
     const clickEditPopUp = async (id, title, label, value) => {
-        const { value: inputValue } = await Swal.fire({
-            title: title,
-            input: "text",
-            inputLabel: label,
-            inputValue: label !== "Interval" ? value : value / 60000,
-            showCancelButton: true,
-            inputValidator: (value) => {
-                if (!value) {
-                    return "You need to write something!";
-                }
-            },
-        });
-        if (inputValue && label === "TimerName") {
-            await axios.put(`/timers/${id}`, { timerName: inputValue });
-            setTimers((currentState) =>
-                currentState.map((elem) => (elem.id === id ? { ...elem, timerName: inputValue } : elem))
-            );
-        }
-        if (inputValue && label === "Response") {
-            await axios.put(`/timers/${id}`, { response: inputValue });
-            setTimers((currentState) =>
-                currentState.map((elem) => (elem.id === id ? { ...elem, response: inputValue } : elem))
-            );
-        }
-        if (inputValue && label === "Interval") {
-            await axios.put(`/timers/${id}`, { interval: `${inputValue * 60000}` });
-            setTimers((currentState) =>
-                currentState.map((elem) => (elem.id === id ? { ...elem, interval: `${inputValue * 60000}` } : elem))
-            );
-        }
-        if (inputValue && label === "Description") {
-            await axios.put(`/timers/${id}`, { description: inputValue });
-            setTimers((currentState) =>
-                currentState.map((elem) => (elem.id === id ? { ...elem, description: inputValue } : elem))
-            );
+        try {
+            const { value: inputValue } = await Swal.fire({
+                title: title,
+                input: "text",
+                inputLabel: label,
+                inputValue: label !== "Interval" ? value : value / 60000,
+                showCancelButton: true,
+                inputValidator: (value) => {
+                    if (!value) {
+                        return "You need to write something!";
+                    }
+                    if (isNaN(value)) {
+                        return "Input value must be numeric";
+                    }
+                },
+            });
+            if (inputValue && label === "TimerName") {
+                await axios.put(`/timers/${id}`, { timerName: inputValue });
+                setTimers((currentState) =>
+                    currentState.map((elem) => (elem.id === id ? { ...elem, timerName: inputValue } : elem))
+                );
+            }
+            if (inputValue && label === "Response") {
+                await axios.put(`/timers/${id}`, { response: inputValue });
+                setTimers((currentState) =>
+                    currentState.map((elem) => (elem.id === id ? { ...elem, response: inputValue } : elem))
+                );
+            }
+            if (inputValue && label === "Interval") {
+                await axios.put(`/timers/${id}`, { interval: `${inputValue * 60000}` });
+                setTimers((currentState) =>
+                    currentState.map((elem) => (elem.id === id ? { ...elem, interval: `${inputValue * 60000}` } : elem))
+                );
+            }
+            if (inputValue && label === "Description") {
+                await axios.put(`/timers/${id}`, { description: inputValue });
+                setTimers((currentState) =>
+                    currentState.map((elem) => (elem.id === id ? { ...elem, description: inputValue } : elem))
+                );
+            }
+        } catch (err) {
+            console.dir(err);
         }
     };
 
@@ -98,14 +105,14 @@ function Timers() {
                     icon: "success",
                     title: "Your timers has been deleted",
                     showConfirmButton: false,
-                    timer: 1500,
+                    timer: 1000,
                 });
                 setTimers((currentState) => currentState.filter((elem) => elem.id !== id));
             }
         } catch (err) {
             console.dir(err);
         }
-    }
+    };
 
     return (
         <div className="grid grid-cols-5 lg:grid-cols-1 md:contents">
@@ -141,7 +148,12 @@ function Timers() {
 
                 <Table>
                     <Thead th={th} />
-                    <TbodyTimer timers={timers} clickDelTimer={clickDelTimer} clickChangeStatus={clickChangeStatus} clickEditPopUp={clickEditPopUp} />
+                    <TbodyTimer
+                        timers={timers}
+                        clickDelTimer={clickDelTimer}
+                        clickChangeStatus={clickChangeStatus}
+                        clickEditPopUp={clickEditPopUp}
+                    />
                 </Table>
 
                 <div className="flex justify-between items-center mt-2 md:flex-col">

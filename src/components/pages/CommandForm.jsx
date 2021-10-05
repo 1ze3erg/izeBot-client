@@ -43,7 +43,7 @@ function CommandForm() {
                     icon: "success",
                     title: "Your custom commands has been added",
                     showConfirmButton: false,
-                    timer: 1500,
+                    timer: 1000,
                 });
                 history.push("/custom-commands");
             }

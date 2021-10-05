@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { IZECHAT_URL } from "../../../config/env";
 import { createMenu } from "../../../config/routes";
 import { useAppContext } from "../../../contexts/AppContext";
+import { getAvatar } from "../../../helpers/localStorage";
 import Brand from "./Brand";
 import MenuButton from "./MenuButton";
 import MenuLink from "./MenuLink";
@@ -39,7 +40,7 @@ function Header() {
                     {auth && (
                         <Link to="/profile">
                             <li className="md:hidden">
-                                <img src="https://picsum.photos/500" className="w-14 rounded-full" alt="profile-avatar" />
+                                <img src={getAvatar()} className="w-14 rounded-full" alt="profile-avatar" />
                             </li>
                         </Link>
                     )}
