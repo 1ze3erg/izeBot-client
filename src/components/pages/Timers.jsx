@@ -46,7 +46,7 @@ function Timers() {
             title: title,
             input: "text",
             inputLabel: label,
-            inputValue: value / 60000,
+            inputValue: label !== "Interval" ? value : value / 60000,
             showCancelButton: true,
             inputValidator: (value) => {
                 if (!value) {
