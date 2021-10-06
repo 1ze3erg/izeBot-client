@@ -11,13 +11,6 @@ import Thead from "../ui/Table/Thead";
 function CustomCommands() {
     const { customCommands, setCustomCommands } = useContentContext();
 
-    const th = [
-        { name: "Status", width: "w-1/12" },
-        { name: "Command", width: "w-1/12" },
-        { name: "Response", width: "w-8/12" },
-        { name: "Actions", width: "w-2/12" },
-    ];
-
     useEffect(() => {
         axios
             .get("/custom-commands")
@@ -28,6 +21,13 @@ function CustomCommands() {
                 console.dir(err);
             });
     }, [setCustomCommands]);
+
+    const th = [
+        { name: "Status", width: "w-1/12" },
+        { name: "Command", width: "w-1/12" },
+        { name: "Response", width: "w-8/12" },
+        { name: "Actions", width: "w-2/12" },
+    ];
 
     const clickChangeStatus = async (id, status) => {
         try {

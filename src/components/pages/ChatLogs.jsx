@@ -1,15 +1,10 @@
-import { useEffect, useState } from "react";
 import axios from "../../config/axios";
+import { useEffect } from "react";
+import { useContentContext } from "../../contexts/ContentContext";
 import Sidebar from "../layouts/Sidebar/Sidebar";
 
 function ChatLogs() {
-    const [chatLogs, setChatLogs] = useState([]);
-
-    const th = [
-        { name: "Date", width: "w-2/12" },
-        { name: "Chatter", width: "w-1/12" },
-        { name: "Message", width: "w-9/12" },
-    ];
+    const { chatLogs, setChatLogs } = useContentContext();
 
     useEffect(() => {
         axios
@@ -20,7 +15,14 @@ function ChatLogs() {
             .catch((err) => {
                 console.dir(err);
             });
-    }, []);
+    }, [setChatLogs]);
+
+    const th = [
+        { name: "Date", width: "w-2/12" },
+        { name: "Chatter", width: "w-1/12" },
+        { name: "Message", width: "w-6/12" },
+        { name: "Room", width: "w-3/12" },
+    ];
 
     return (
         <div className="grid grid-cols-5 lg:grid-cols-1 md:contents">
@@ -61,16 +63,20 @@ function ChatLogs() {
                     <tbody>
                         {chatLogs.map((elem) => (
                             <tr key={elem.id}>
-                                <td>{elem.date}</td>
+                                <td>
+                                    {elem.date.slice(0, 19).split("T")[0]}<br />
+                                    {elem.date.slice(0, 19).split("T")[1]}
+                                </td>
                                 <td>{elem.chatter}</td>
                                 <td>{elem.message}</td>
+                                <td>{elem.ChatRoom?.chatRoomName}</td>
                             </tr>
                         ))}
                     </tbody>
                 </table>
 
                 <div className="flex justify-between items-center mt-2 md:flex-col">
-                    <span className="md:mb-5 mt-2">Showing 1 to 10 of 50 Commands</span>
+                    <span className="md:mb-5 mt-2">Showing 1 to {chatLogs.length} of {chatLogs.length} Commands</span>
                     <ul className="flex text-center md:grid md:grid-cols-4 md:gap-px">
                         <li
                             className="

@@ -11,14 +11,6 @@ import Thead from "../ui/Table/Thead";
 function Timers() {
     const { timers, setTimers } = useContentContext();
 
-    const th = [
-        { name: "Status", width: "w-1/12" },
-        { name: "Timer Name", width: "w-1/12" },
-        { name: "Response", width: "w-6/12" },
-        { name: "Interval (mins)", width: "w-1/12" },
-        { name: "Actions", width: "w-3/12" },
-    ];
-
     useEffect(() => {
         axios
             .get("/timers")
@@ -29,6 +21,14 @@ function Timers() {
                 console.dir(err);
             });
     }, [setTimers]);
+
+    const th = [
+        { name: "Status", width: "w-1/12" },
+        { name: "Timer Name", width: "w-1/12" },
+        { name: "Response", width: "w-6/12" },
+        { name: "Interval (mins)", width: "w-1/12" },
+        { name: "Actions", width: "w-3/12" },
+    ];
 
     const clickChangeStatus = async (id, status) => {
         try {
