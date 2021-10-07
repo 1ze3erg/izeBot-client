@@ -30,8 +30,10 @@ function Profile() {
                     }
                 },
             });
-            setUserProfile((currentState) => ({ ...currentState, displayName }));
-            await axios.put("/users/update", { displayName });
+            if (displayName) {
+                setUserProfile((currentState) => ({ ...currentState, displayName }));
+                await axios.put("/users/update", { displayName });
+            }
         } catch (err) {
             console.dir(err);
         }

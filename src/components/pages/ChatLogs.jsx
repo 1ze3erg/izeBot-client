@@ -2,6 +2,8 @@ import axios from "../../config/axios";
 import { useEffect } from "react";
 import { useContentContext } from "../../contexts/ContentContext";
 import Sidebar from "../layouts/Sidebar/Sidebar";
+import Table from "../ui/Table/Table";
+import Thead from "../ui/Table/Thead";
 
 function ChatLogs() {
     const { chatLogs, setChatLogs } = useContentContext();
@@ -50,22 +52,13 @@ function ChatLogs() {
                     </div>
                 </div>
 
-                <table className="block mx-auto text-center table-auto bg-white md:overflow-auto">
-                    <thead>
-                        <tr>
-                            {th.map((elem, idx) => (
-                                <th key={idx} className={`${elem.width} font-semibold text-xl`}>
-                                    {elem.name}
-                                </th>
-                            ))}
-                        </tr>
-                    </thead>
+                <Table>
+                    <Thead th={th} />
                     <tbody>
                         {chatLogs.map((elem) => (
                             <tr key={elem.id}>
                                 <td>
-                                    {elem.date.slice(0, 19).split("T")[0]}<br />
-                                    {elem.date.slice(0, 19).split("T")[1]}
+                                    {new Date(elem.date).toLocaleString("th-TH")}
                                 </td>
                                 <td>{elem.chatter}</td>
                                 <td>{elem.message}</td>
@@ -73,10 +66,12 @@ function ChatLogs() {
                             </tr>
                         ))}
                     </tbody>
-                </table>
+                </Table>
 
                 <div className="flex justify-between items-center mt-2 md:flex-col">
-                    <span className="md:mb-5 mt-2">Showing 1 to {chatLogs.length} of {chatLogs.length} Commands</span>
+                    <span className="md:mb-5 mt-2">
+                        Showing 1 to {chatLogs.length} of {chatLogs.length} Commands
+                    </span>
                     <ul className="flex text-center md:grid md:grid-cols-4 md:gap-px">
                         <li
                             className="

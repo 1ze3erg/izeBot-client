@@ -1,6 +1,6 @@
 function Table({ children }) {
     return (
-        <table className="block mx-auto text-center bg-white md:overflow-auto">
+        <table className="w-full mx-auto text-center bg-white md:overflow-auto md:block">
             {children}
         </table>
     );

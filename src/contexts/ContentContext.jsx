@@ -3,6 +3,7 @@ import { createContext, useContext, useState } from "react";
 const ContentContext = createContext();
 
 function ContenProvider({ children }) {
+    const [defaultCommands, setDefaultCommands] = useState([]);
     const [customCommands, setCustomCommands] = useState([]);
     const [timers, setTimers] = useState([]);
     const [chatLogs, setChatLogs] = useState([]);
@@ -11,6 +12,8 @@ function ContenProvider({ children }) {
     return (
         <ContentContext.Provider
             value={{
+                defaultCommands,
+                setDefaultCommands,
                 customCommands,
                 setCustomCommands,
                 timers,

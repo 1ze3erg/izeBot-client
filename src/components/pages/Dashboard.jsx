@@ -4,10 +4,28 @@ import { useContentContext } from "../../contexts/ContentContext";
 import Sidebar from "../layouts/Sidebar/Sidebar";
 
 function Dashboard() {
-    const { customCommands, setCustomCommands, timers, setTimers, chatLogs, setChatLogs, chatRooms, setChatRooms } =
-        useContentContext();
+    const {
+        defaultCommands,
+        setDefaultCommands,
+        customCommands,
+        setCustomCommands,
+        timers,
+        setTimers,
+        chatLogs,
+        setChatLogs,
+        chatRooms,
+        setChatRooms,
+    } = useContentContext();
 
     useEffect(() => {
+        axios
+            .get("/default-commands")
+            .then((res) => {
+                setDefaultCommands(res.data);
+            })
+            .catch((err) => {
+                console.dir(err);
+            });
         axios
             .get("/custom-commands")
             .then((res) => {
@@ -40,7 +58,7 @@ function Dashboard() {
             .catch((err) => {
                 console.dir(err);
             });
-    }, [setCustomCommands, setTimers, setChatLogs, setChatRooms]);
+    }, [setDefaultCommands, setCustomCommands, setTimers, setChatLogs, setChatRooms]);
 
     const mostChatter = chatLogs.reduce((total, elem) => {
         if (total[elem.chatter]) total[elem.chatter]++;
@@ -75,7 +93,9 @@ function Dashboard() {
                     <div className="bg-indigo-200 border-4 border-indigo-400 ring-4 ring-indigo-400 rounded-lg text-center p-5">
                         <i className="fas fa-terminal text-5xl mb-3"></i>
                         <h2 className="font-bold text-5xl my-5">Total Command</h2>
-                        <p className="text-5xl my-5">{customCommands.length + timers.length}</p>
+                        <p className="text-5xl my-5">
+                            {defaultCommands.length + customCommands.length + timers.length}
+                        </p>
                     </div>
                 </div>
             </div>

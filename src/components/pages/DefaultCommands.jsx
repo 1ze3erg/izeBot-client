@@ -1,16 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import axios from "../../config/axios";
+import { useContentContext } from "../../contexts/ContentContext";
 import Sidebar from "../layouts/Sidebar/Sidebar";
+import Table from "../ui/Table/Table";
+import Thead from "../ui/Table/Thead";
 
 function DefaultCommands() {
-    const [defaultCommands, setDefaultCommands] = useState([]);
-
-    const th = [
-        { name: "Status", width: "w-0.5/12" },
-        { name: "Command", width: "w-2/12" },
-        { name: "Description", width: "w-9/12" },
-        { name: "Actions", width: "w-0.5/12" },
-    ];
+    const { defaultCommands, setDefaultCommands } = useContentContext();
 
     useEffect(() => {
         axios
@@ -21,7 +17,13 @@ function DefaultCommands() {
             .catch((err) => {
                 console.dir(err);
             });
-    }, []);
+    }, [setDefaultCommands]);
+
+    const th = [
+        { name: "Command", width: "w-2/12" },
+        { name: "Description", width: "w-5/12" },
+        { name: "Response", width: "w-5/12" },
+    ];
 
     return (
         <div className="grid grid-cols-5 lg:grid-cols-1 md:contents">
@@ -63,42 +65,26 @@ function DefaultCommands() {
                     </div>
                 </div>
 
-                <table className="block mx-auto text-center bg-white md:overflow-auto">
-                    <thead>
-                        <tr>
-                            {th.map((elem, idx) => (
-                                <th key={idx} className={`${elem.width} font-semibold text-xl`}>
-                                    {elem.name}
-                                </th>
-                            ))}
-                        </tr>
-                    </thead>
+                <Table>
+                    <Thead th={th} />
                     <tbody>
                         {defaultCommands.map((elem) => {
                             return (
                                 <tr>
                                     <td>
-                                        <button className="text-3xl">
-                                            <i className={`fas fa-toggle-${elem.status ? "on" : "off"}`}></i>
-                                        </button>
-                                    </td>
-                                    <td>
                                         <p className="text-lg">{elem.command}</p>
                                     </td>
                                     <td>
-                                        <p className="text-lg">{elem.response}</p>
                                         <p className="text-md">{elem.description}</p>
                                     </td>
                                     <td>
-                                        <button className="text-xl mr-4">
-                                            <i className="far fa-edit"></i>
-                                        </button>
+                                        <p className="text-lg">{elem.response}</p>
                                     </td>
                                 </tr>
                             );
                         })}
                     </tbody>
-                </table>
+                </Table>
 
                 <div className="flex justify-between items-center mt-2 md:flex-col">
                     <span className="md:mb-5 mt-2">

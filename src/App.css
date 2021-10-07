@@ -23,6 +23,10 @@
   width: 500px;
 }
 
+.h-500 {
+  height: 500px;
+}
+
 th, td {
   border: 2px solid black;
   padding: 1rem;
