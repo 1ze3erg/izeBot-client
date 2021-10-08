@@ -1,6 +1,6 @@
 const command = {
     hello: "Hello Guest",
-    "!random": function (min, max) {
+    "!random": function (min = 0, max = 10) {
         return Math.floor(Math.random() * (max - min)) + min;
     },
     "!pi": Math.PI,

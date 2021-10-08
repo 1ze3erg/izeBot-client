@@ -15,12 +15,15 @@ function TryBot() {
         e.preventDefault();
 
         const [text, option] = inputMessage.split(" ");
-        console.log(option.split("-"));
 
         let botMessage = command[text];
 
         if (typeof botMessage === "function") {
-            botMessage = botMessage(+option.split("-")[0], +option.split("-")[1]);
+            if (option) {
+                botMessage = botMessage(+option.split("-")[0], +option.split("-")[1]);
+            } else {
+                botMessage = botMessage();
+            }
         }
 
         if (inputMessage.trim() !== "") {
@@ -65,7 +68,10 @@ function TryBot() {
                     </div>
 
                     <div className="w-full h-500 rounded-lg border-4 border-gray-500 ring-4 ring-gray-500 bg-gray-700 flex flex-1 flex-col items-center lg:py-2">
-                        <form className="w-full h-full flex justify-between items-center" onSubmit={submitSendMessage}>
+                        <form
+                            className="w-full h-full p-2 flex justify-between items-center"
+                            onSubmit={submitSendMessage}
+                        >
                             <i className="fas fa-user bg-gray-300 text-indigo-700 px-4 py-3 mx-2 rounded-md"></i>
                             <input
                                 type="text"
@@ -83,40 +89,6 @@ function TryBot() {
                 <div className="flex justify-center items-center py-7 px-5 md:max-w-md lg:max-w-lg lg:w-full lg:mx-auto lg:p-0 lg:py-5 sm:max-w-full">
                     <div className="h-full w-full flex flex-col justify-start items-center bg-white px-10 rounded-lg">
                         <h1 className="text-3xl py-5">Command List</h1>
-                        <ol className="list-decimal text-center">
-                            <li>
-                                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Hic, vitae! Sunt quidem ad
-                                natus aliquid eaque nam quaerat, assumenda excepturi.
-                            </li>
-                            <li>
-                                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Hic, vitae! Sunt quidem ad
-                                natus aliquid eaque nam quaerat, assumenda excepturi.
-                            </li>
-                            <li>
-                                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Hic, vitae! Sunt quidem ad
-                                natus aliquid eaque nam quaerat, assumenda excepturi.
-                            </li>
-                            <li>
-                                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Hic, vitae! Sunt quidem ad
-                                natus aliquid eaque nam quaerat, assumenda excepturi.
-                            </li>
-                            <li>
-                                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Hic, vitae! Sunt quidem ad
-                                natus aliquid eaque nam quaerat, assumenda excepturi.
-                            </li>
-                            <li>
-                                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Hic, vitae! Sunt quidem ad
-                                natus aliquid eaque nam quaerat, assumenda excepturi.
-                            </li>
-                            <li>
-                                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Hic, vitae! Sunt quidem ad
-                                natus aliquid eaque nam quaerat, assumenda excepturi.
-                            </li>
-                            <li>
-                                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Hic, vitae! Sunt quidem ad
-                                natus aliquid eaque nam quaerat, assumenda excepturi.
-                            </li>
-                        </ol>
                     </div>
                 </div>
             </div>

@@ -4,6 +4,7 @@ import { useContentContext } from "../../contexts/ContentContext";
 import Sidebar from "../layouts/Sidebar/Sidebar";
 import Table from "../ui/Table/Table";
 import Thead from "../ui/Table/Thead";
+import TbodyChatLog from "../ui/Table/TbodyChatLog";
 
 function ChatLogs() {
     const { chatLogs, setChatLogs } = useContentContext();
@@ -54,18 +55,7 @@ function ChatLogs() {
 
                 <Table>
                     <Thead th={th} />
-                    <tbody>
-                        {chatLogs.map((elem) => (
-                            <tr key={elem.id}>
-                                <td>
-                                    {new Date(elem.date).toLocaleString("th-TH")}
-                                </td>
-                                <td>{elem.chatter}</td>
-                                <td>{elem.message}</td>
-                                <td>{elem.ChatRoom?.chatRoomName}</td>
-                            </tr>
-                        ))}
-                    </tbody>
+                    <TbodyChatLog chatLogs={chatLogs} />
                 </Table>
 
                 <div className="flex justify-between items-center mt-2 md:flex-col">

@@ -33,7 +33,6 @@ function Header() {
                             bgColor={elem.bgColor}
                             textColor={elem.textColor}
                             to={elem.to}
-                            onClick={elem.onClick}
                             key={idx}
                         />
                     ))}

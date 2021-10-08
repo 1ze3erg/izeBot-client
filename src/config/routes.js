@@ -70,7 +70,7 @@ const sidebarMenu = [
     { name: "Timers", to: "/timers", icon: "fa-stopwatch" },
     { name: "Preview Bot test", to: "/preview-bot-test", icon: "fa-comments" },
     { name: "Chat Logs", to: "/chat-logs", icon: "fa-database" },
-    { name: "Intregrations", to: "/intregrations", icon: "fa-link" },
+    { name: "Intregrations (coming soon)", to: "/intregrations", icon: "fa-link" },
 ];
 
 export { routes, createMenu, sidebarMenu };
