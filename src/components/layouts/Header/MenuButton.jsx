@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useAppContext } from "../../../contexts/AppContext";
-import { removeAvatar, removeToken } from "../../../helpers/localStorage";
+import { removeAvatar, removeDisplayName, removeToken } from "../../../helpers/localStorage";
 
 function MenuButton({ name, bgColor, textColor, to }) {
     const { setAuth } = useAppContext();
@@ -10,6 +10,7 @@ function MenuButton({ name, bgColor, textColor, to }) {
             setAuth(false);
             removeToken();
             removeAvatar();
+            removeDisplayName();
         }
     };
 

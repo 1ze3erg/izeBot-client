@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { isEmail } from "validator";
 import { useAppContext } from "../../contexts/AppContext";
-import { setAvatar, setToken } from "../../helpers/localStorage";
+import { setAvatar, setDisplayName, setToken } from "../../helpers/localStorage";
 import axios from "../../config/axios";
 import ErrFeedback from "../ui/ErrFeedback";
 
@@ -38,6 +38,7 @@ function Login() {
                 const res = await axios.post("/users/login", loginInput);
                 setToken(res.data.token);
                 setAvatar(res.data.avatar);
+                setDisplayName(res.data.displayName);
                 setAuth(true);
             }
         } catch (err) {
