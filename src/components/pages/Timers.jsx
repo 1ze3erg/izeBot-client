@@ -1,15 +1,20 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import axios from "../../config/axios";
 import { useContentContext } from "../../contexts/ContentContext";
 import Sidebar from "../layouts/Sidebar/Sidebar";
+import Filter from "../ui/Filter";
+import Pagination from "../ui/Pagination";
 import Table from "../ui/Table/Table";
 import TbodyTimer from "../ui/Table/TbodyTimer";
 import Thead from "../ui/Table/Thead";
 
 function Timers() {
     const { timers, setTimers } = useContentContext();
+    const [currentPage, setCurrentPage] = useState(1);
+    const [perPage, setPerPage] = useState(5);
+    const [searchInput, setSearchInput] = useState("");
 
     useEffect(() => {
         axios
@@ -21,14 +26,6 @@ function Timers() {
                 console.dir(err);
             });
     }, [setTimers]);
-
-    const th = [
-        { name: "Status", width: "w-1/12" },
-        { name: "Timer Name", width: "w-1/12" },
-        { name: "Response", width: "w-6/12" },
-        { name: "Interval (mins)", width: "w-1/12" },
-        { name: "Actions", width: "w-3/12" },
-    ];
 
     const clickChangeStatus = async (id, status) => {
         try {
@@ -114,6 +111,46 @@ function Timers() {
         }
     };
 
+    const handleChangeSearch = (e) => {
+        setSearchInput(e.target.value);
+        setCurrentPage(1);
+    };
+
+    const handleChangePerPage = (e) => {
+        setPerPage(+e.target.value);
+        setCurrentPage(1);
+    };
+
+    const th = [
+        { name: "Status", width: "w-1/12" },
+        { name: "Timer Name", width: "w-1/12" },
+        { name: "Response", width: "w-6/12" },
+        { name: "Interval (mins)", width: "w-1/12" },
+        { name: "Actions", width: "w-3/12" },
+    ];
+
+    const filterTimers = timers.filter((elem) => {
+        return (
+            elem.command?.toLowerCase().includes(searchInput.toLowerCase()) ||
+            elem.response?.toLowerCase().includes(searchInput.toLowerCase()) ||
+            `${elem.interval / 60000}`.includes(searchInput) 
+        );
+    });
+    const numberOfPage = Math.ceil(filterTimers.length / perPage);
+    const start = currentPage === 1 ? 0 : perPage * (currentPage - 1);
+    const end = currentPage === 1 ? perPage : perPage * currentPage;
+    const showing = start + 1;
+    const to = currentPage === numberOfPage ? filterTimers.length : end;
+    const total = filterTimers.length;
+
+    function createPageArr(page) {
+        let arr = [];
+        for (let index = 0; index < page; index++) {
+            arr.push(index + 1);
+        }
+        return arr;
+    }
+
     return (
         <div className="grid grid-cols-5 lg:grid-cols-1 md:contents">
             <Sidebar />
@@ -125,130 +162,30 @@ function Timers() {
                         <i className="fas fa-plus"></i> Add Timer
                     </button>
                 </Link>
-
-                <div className="flex justify-between mb-2 md:flex-col">
-                    <div className="flex md:flex-1 items-center md:mb-2 md:text-xl md:text-center md:border-2 md:border-black md:p-2 md:bg-gray-600">
-                        <span className="mr-2 md:flex-1 md:m-0 md:text-white">Show</span>
-                        <select className="mr-2 p-2 md:flex-1 self-stretch md:m-0">
-                            <option value="5">5</option>
-                            <option value="10">10</option>
-                            <option value="15">15</option>
-                            <option value="20">20</option>
-                            <option value="25">25</option>
-                        </select>
-                        <span className="md:flex-1 md:text-white">Commands</span>
-                    </div>
-                    <div className="flex flex-1 justify-end items-center md:text-xl md:text-center md:border-2 md:border-black md:p-2 md:bg-gray-600">
-                        <label htmlFor="search" className="mr-2 md:flex-1 md:m-0 md:text-white">
-                            Search
-                        </label>
-                        <input type="text" id="search" className="p-2 md:flex-1" />
-                    </div>
-                </div>
-
+                <Filter
+                    perPage={perPage}
+                    handleChangePerPage={handleChangePerPage}
+                    searchInput={searchInput}
+                    handleChangeSearch={handleChangeSearch}
+                />
                 <Table>
                     <Thead th={th} />
                     <TbodyTimer
-                        timers={timers}
+                        timers={filterTimers.slice(start, end)}
                         clickDelTimer={clickDelTimer}
                         clickChangeStatus={clickChangeStatus}
                         clickEditPopUp={clickEditPopUp}
                     />
                 </Table>
-
-                <div className="flex justify-between items-center mt-2 md:flex-col">
-                    <span className="md:mb-5 mt-2">
-                        Showing 1 to {timers.length} of {timers.length} Timers
-                    </span>
-                    <ul className="flex text-center md:grid md:grid-cols-4 md:gap-px">
-                        <li
-                            className="
-                                cursor-pointer
-                                hover:bg-gray-500
-                                border-2 border-black border-r-0
-                                rounded-l-md
-                                px-4
-                                py-2
-                                md:rounded-none md:border-2
-                            "
-                        >
-                            First
-                        </li>
-                        <li
-                            className="
-                                cursor-pointer
-                                hover:bg-gray-500
-                                border-2 border-black border-r-0
-                                px-4
-                                py-2
-                                md:border-2
-                            "
-                        >
-                            Previous
-                        </li>
-                        <li
-                            className="
-                                cursor-pointer
-                                hover:bg-gray-500
-                                border-2 border-black border-r-0
-                                px-4
-                                py-2
-                                md:border-2
-                            "
-                        >
-                            1
-                        </li>
-                        <li
-                            className="
-                                cursor-pointer
-                                hover:bg-gray-500
-                                border-2 border-black border-r-0
-                                px-4
-                                py-2
-                                md:border-2
-                            "
-                        >
-                            2
-                        </li>
-                        <li
-                            className="
-                                cursor-pointer
-                                hover:bg-gray-500
-                                border-2 border-black border-r-0
-                                px-4
-                                py-2
-                                md:border-2
-                            "
-                        >
-                            3
-                        </li>
-                        <li
-                            className="
-                                cursor-pointer
-                                hover:bg-gray-500
-                                border-2 border-black border-r-0
-                                px-4
-                                py-2
-                                md:border-2
-                            "
-                        >
-                            Next
-                        </li>
-                        <li
-                            className="
-                                cursor-pointer
-                                hover:bg-gray-500
-                                border-2 border-black
-                                rounded-r-md
-                                px-4
-                                py-2
-                                md:rounded-none md:border-2
-                            "
-                        >
-                            Last
-                        </li>
-                    </ul>
-                </div>
+                <Pagination
+                    showing={showing}
+                    to={to}
+                    total={total}
+                    currentPage={currentPage}
+                    setCurrentPage={setCurrentPage}
+                    createPageArr={createPageArr}
+                    numberOfPage={numberOfPage}
+                />
             </div>
         </div>
     );

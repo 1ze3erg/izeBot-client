@@ -30,6 +30,7 @@ function PreviewBotTest() {
         const timerId = [];
         timerArr.forEach((elem) => {
             const id = setInterval(() => {
+                console.log("timer interval");
                 setChats((currentState) => [
                     ...currentState,
                     { displayName: "izeBot", message: elem.response, role: "BOT" },
