@@ -1,15 +1,25 @@
 import axios from "../../config/axios";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { getAvatar, getDisplayName } from "../../helpers/localStorage";
 import Sidebar from "../layouts/Sidebar/Sidebar";
 import Chat from "../ui/Chat";
 
 function PreviewBotTest() {
+    const chatElem = useRef(null);
     const [chats, setChats] = useState([]);
     const [inputMessage, setInputMessage] = useState("");
     const [defaultCommandObj, setDefaultCommandObj] = useState({});
     const [customCommandObj, setCustomCommandObj] = useState({});
     const [timerArr, setTimerArr] = useState([]);
+
+    useEffect(() => {
+        if (chatElem) {
+          chatElem.current.addEventListener('DOMNodeInserted', event => {
+            const { currentTarget: target } = event;
+            target.scroll({ top: target.scrollHeight, behavior: 'smooth' });
+          });
+        }
+      }, [])
 
     useEffect(() => {
         axios
@@ -30,7 +40,6 @@ function PreviewBotTest() {
         const timerId = [];
         timerArr.forEach((elem) => {
             const id = setInterval(() => {
-                console.log("timer interval");
                 setChats((currentState) => [
                     ...currentState,
                     { displayName: "izeBot", message: elem.response, role: "BOT" },
@@ -76,7 +85,7 @@ function PreviewBotTest() {
             <Sidebar />
             <div className="col-span-4 h-screen bg-gray-400 flex justify-center items-center">
                 <div className="flex flex-col self-stretch py-5">
-                    <div className="w-500 h-500 rounded-lg border-4 border-gray-500 ring-4 ring-gray-500 bg-gray-700 flex flex-4 flex-col items-center p-5 mb-10 overflow-y-auto overflow-x-hidden">
+                    <div className="w-500 h-500 rounded-lg border-4 border-gray-500 ring-4 ring-gray-500 bg-gray-700 flex flex-4 flex-col items-center p-5 mb-10 overflow-y-auto overflow-x-hidden" ref={chatElem}>
                         {chats.map((elem, idx) => (
                             <Chat key={idx} displayName={elem.displayName} message={elem.message} role={elem.role} />
                         ))}
