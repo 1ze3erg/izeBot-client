@@ -39,7 +39,7 @@ function Header() {
                     {auth && (
                         <Link to="/profile">
                             <li className="md:hidden">
-                                <img src={getAvatar()} className="w-14 rounded-full" alt="profile-avatar" style={{ width: "50px", height: "50px" }} />
+                                <img src={getAvatar()} className="rounded-full w-14 h-14" alt="profile-avatar" />
                             </li>
                         </Link>
                     )}

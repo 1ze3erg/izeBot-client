@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { useContentContext } from "../../contexts/ContentContext";
+import { isNumeric, isInt } from "validator";
 import Swal from "sweetalert2";
 import axios from "../../config/axios";
-import { useContentContext } from "../../contexts/ContentContext";
 import Sidebar from "../layouts/Sidebar/Sidebar";
 import Filter from "../ui/Filter";
 import Pagination from "../ui/Pagination";
@@ -50,8 +51,11 @@ function Timers() {
                     if (!value) {
                         return "You need to write something!";
                     }
-                    if (isNaN(value)) {
+                    if (!isNumeric(value)) {
                         return "Input value must be numeric";
+                    }
+                    if (!isInt(value)) {
+                        return "Input value must be integer";
                     }
                 },
             });

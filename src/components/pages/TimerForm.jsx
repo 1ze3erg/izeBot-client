@@ -3,6 +3,7 @@ import Swal from "sweetalert2";
 import { useState } from "react";
 import { useHistory } from "react-router";
 import { useContentContext } from "../../contexts/ContentContext";
+import { isNumeric, isInt } from "validator";
 import Sidebar from "../layouts/Sidebar/Sidebar";
 import ErrFeedback from "../ui/ErrFeedback";
 
@@ -16,6 +17,12 @@ function TimerForm() {
         if (e.target.value.trim() === "") {
             setErr((currentState) => ({ ...currentState, [e.target.name]: `${e.target.name} is required` }));
             setTimer((currentState) => ({ ...currentState, [e.target.name]: "" }));
+        } else if (e.target.name === "interval" && (!isNumeric(e.target.value) || !isInt(e.target.value))) {
+            setErr((currentState) => ({
+                ...currentState,
+                [e.target.name]: `${e.target.name} must be numeric and interger`,
+            }));
+            setTimer((currentState) => ({ ...currentState, [e.target.name]: e.target.value }));
         } else {
             setErr((currentState) => {
                 delete currentState[e.target.name];
@@ -29,7 +36,7 @@ function TimerForm() {
         try {
             e.preventDefault();
             Object.keys(timer).forEach((elem) => {
-                if (elem === "command" || elem === "response") {
+                if (elem === "timerName" || elem === "response" || elem === "interval") {
                     if (timer[elem] === "") {
                         setErr((currentState) => ({ ...currentState, [elem]: `${elem} is required` }));
                     }
