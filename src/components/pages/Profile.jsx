@@ -1,6 +1,7 @@
 import axios from "../../config/axios";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
+import { getAvatar, setAvatar } from "../../helpers/localStorage";
 
 function Profile() {
     const [userProfile, setUserProfile] = useState({});
@@ -42,6 +43,7 @@ function Profile() {
     const submitUpdateProfile = async (e) => {
         try {
             e.preventDefault();
+            await axios.put("/users/update", userProfile);
             await Swal.fire({
                 position: "top-end",
                 icon: "success",
@@ -54,17 +56,55 @@ function Profile() {
         }
     };
 
+    const clickEditAvatar = async () => {
+        try {
+            const { value: file } = await Swal.fire({
+                title: "Select image",
+                input: "file",
+                inputLabel: "Avatar will show in 300px*300px",
+                inputAttributes: {
+                    accept: "image/*",
+                    "aria-label": "Upload your profile picture",
+                },
+                inputValidator: (value) => {
+                    if (!value) {
+                        return "You need to upload some image!";
+                    }
+                },
+            });
+
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = async (e) => {
+                    await Swal.fire({
+                        title: "Your uploaded picture",
+                        imageUrl: e.target.result,
+                        imageAlt: "The uploaded picture",
+                    });
+                    const formData = new FormData();
+                    formData.append("upload-avatar", file);
+                    await axios.put("/users/upload-avatar", formData);
+                    setAvatar(e.target.result);
+                    window.location.reload();
+                };
+                reader.readAsDataURL(file);
+            }
+        } catch (err) {
+            console.dir(err);
+        }
+    };
+
     return (
         <div className="grid grid-cols-5 bg-gray-400 lg:grid-cols-none lg:grid-rows-3">
             <div className="col-span-2 flex flex-col justify-start items-center p-5 lg:col-span-3 lg:row-span-1">
-                <button className="btn bg-gray-200 mb-3 py-1 z-10">
+                <button className="btn bg-gray-200 mb-3 py-1 z-10" onClick={clickEditAvatar}>
                     <i className="fas fa-edit mr-2"></i>
                     <span>Edit</span>
                 </button>
                 <img
-                    src={userProfile.avatar}
+                    src={getAvatar()}
                     className="rounded-lg mb-5"
-                    style={{ width: "300px" }}
+                    style={{ width: "300px", height: "300px" }}
                     alt="profile-avatar"
                 />
                 <span className="text-center">
@@ -89,7 +129,7 @@ function Profile() {
                             name="email"
                             id="email"
                             className="p-3 text-black rounded-md"
-                            value={userProfile.email}
+                            value={userProfile.email ?? ""}
                             onChange={handleChangeInput}
                             disabled={true}
                         />
@@ -100,10 +140,10 @@ function Profile() {
                         </label>
                         <input
                             type="text"
-                            name="fname"
-                            id="fname"
+                            name="firstName"
+                            id="firstName"
                             className="p-3 text-black rounded-md"
-                            value={userProfile.firstName}
+                            value={userProfile.firstName ?? ""}
                             onChange={handleChangeInput}
                         />
                     </div>
@@ -113,24 +153,23 @@ function Profile() {
                         </label>
                         <input
                             type="text"
-                            name="lname"
-                            id="lname"
+                            name="lastName"
+                            id="lastName"
                             className="p-3 text-black rounded-md"
-                            value={userProfile.lastName}
+                            value={userProfile.lastName ?? ""}
                             onChange={handleChangeInput}
                         />
                     </div>
-
                     <div className="w-full mb-5 flex flex-col">
                         <label htmlFor="phoneNumber" className="mb-2">
                             Phone Number
                         </label>
                         <input
-                            type="tel"
+                            type="text"
                             name="phoneNumber"
                             id="phoneNumber"
                             className="p-3 text-black rounded-md"
-                            value={userProfile.phoneNumber}
+                            value={userProfile.phoneNumber ?? ""}
                             onChange={handleChangeInput}
                         />
                     </div>
@@ -143,7 +182,7 @@ function Profile() {
                             name="address"
                             id="address"
                             className="p-3 text-black rounded-md"
-                            value={userProfile.address}
+                            value={userProfile.address ?? ""}
                             onChange={handleChangeInput}
                         />
                     </div>
@@ -156,7 +195,7 @@ function Profile() {
                             name="country"
                             id="country"
                             className="p-3 text-black rounded-md"
-                            value={userProfile.country}
+                            value={userProfile.country ?? ""}
                             onChange={handleChangeInput}
                         />
                     </div>
@@ -169,7 +208,7 @@ function Profile() {
                             name="postalCode"
                             id="postalCode"
                             className="p-3 text-black rounded-md"
-                            value={userProfile.postalCode}
+                            value={userProfile.postalCode ?? ""}
                             onChange={handleChangeInput}
                         />
                     </div>

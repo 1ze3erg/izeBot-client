@@ -1,4 +1,5 @@
 import axios from "axios";
+import Swal from "sweetalert2";
 import { getToken, removeToken } from "../helpers/localStorage";
 import { API_URL } from "./env";
 
@@ -10,7 +11,7 @@ axios.interceptors.request.use(
         return config;
     },
     (err) => {
-        Promise.reject(err);
+        return Promise.reject(err);
     }
 );
 
@@ -24,7 +25,15 @@ axios.interceptors.response.use(
             window.location.reload();
             return;
         }
-        Promise.reject(err);
+        if (err.response && err.response.status === 400) {
+            console.dir(err);
+            Swal.fire({
+                icon: "error",
+                title: "Error...",
+                text: err.response?.data?.msg,
+            });
+        }
+        return Promise.reject(err);
     }
 );
 
