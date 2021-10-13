@@ -1,4 +1,4 @@
-const tryBotCommand = {
+const defaultCommand = {
     hello: { response: "Hello GUEST", type: "string" },
     bye: { response: "Goodbye GUEST", type: "string" },
     "!random": {
@@ -12,4 +12,4 @@ const tryBotCommand = {
     "!covid": { response: "https://covid19.ddc.moph.go.th/api/Cases/today-cases-all", type: "api" },
 };
 
-export { tryBotCommand };
+export { defaultCommand };

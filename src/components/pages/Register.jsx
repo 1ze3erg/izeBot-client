@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { useHistory } from "react-router";
 import { isEmail } from "validator";
+import Swal from "sweetalert2";
 import axios from "../../config/axios";
 import ErrFeedback from "../ui/ErrFeedback";
+import { Link } from "react-router-dom";
 
 function Register() {
     const [registerInput, setRegisterInput] = useState({ displayName: "", email: "", password: "", rePassword: "" });
@@ -37,7 +39,12 @@ function Register() {
                 setErr((currentState) => ({ ...currentState, rePassword: "password and rePassword did not match" }));
             }
             if (!err.displayName && !err.email && !err.password && !err.rePassword) {
-                await axios.post("/users/register", registerInput);
+                const res = await axios.post("/users/register", registerInput);
+                await Swal.fire({
+                    position: "center-center",
+                    icon: "success",
+                    title: res.data.msg,
+                });
                 history.push("/login");
             }
         } catch (err) {
@@ -111,11 +118,11 @@ function Register() {
                     </button>
                 </form>
                 <div className="bg-white h-1 w-full mb-7"></div>
-                <div className="w-full text-5xl flex justify-between">
-                    <i className="fab fa-twitch"></i>
-                    <i className="fab fa-youtube"></i>
-                    <i className="fab fa-github"></i>
-                    <i className="fab fa-facebook"></i>
+                <div className="w-full text-lg flex justify-center">
+                    You have an account?&nbsp;
+                    <Link to="/login" className="underline">
+                        Sign in
+                    </Link>
                 </div>
             </div>
         </div>

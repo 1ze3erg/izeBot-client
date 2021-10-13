@@ -4,6 +4,7 @@ import { useAppContext } from "../../contexts/AppContext";
 import { setAvatar, setDisplayName, setToken } from "../../helpers/localStorage";
 import axios from "../../config/axios";
 import ErrFeedback from "../ui/ErrFeedback";
+import { Link } from "react-router-dom";
 
 function Login() {
     const { setAuth } = useAppContext();
@@ -65,7 +66,7 @@ function Login() {
                         />
                         {err.email && <ErrFeedback err={err.email} />}
                     </div>
-                    <div className="w-full mb-5 flex flex-col">
+                    <div className="w-full mb-7 flex flex-col">
                         <label htmlFor="password" className="mb-2">
                             Password
                         </label>
@@ -83,14 +84,12 @@ function Login() {
                         Sign in
                     </button>
                 </form>
-                <div className="bg-white h-1 w-full mb-2"></div>
-                <p>Or</p>
-                <p className="mb-7">Sign in with</p>
-                <div className="w-full text-4xl flex justify-between">
-                    <i className="fab fa-twitch"></i>
-                    <i className="fab fa-youtube"></i>
-                    <i className="fab fa-github"></i>
-                    <i className="fab fa-facebook"></i>
+                <div className="bg-white h-1 w-full mb-10"></div>
+                <div className="w-full text-lg flex justify-center">
+                    You don't have any account?&nbsp;
+                    <Link to="/register" className="underline">
+                        Register
+                    </Link>
                 </div>
             </div>
         </div>

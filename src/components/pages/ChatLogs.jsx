@@ -52,8 +52,8 @@ function ChatLogs() {
     const numberOfPage = Math.ceil(filterChatLogs.length / perPage);
     const start = currentPage === 1 ? 0 : perPage * (currentPage - 1);
     const end = currentPage === 1 ? perPage : perPage * currentPage;
-    const showing = start + 1;
-    const to = currentPage === numberOfPage ? filterChatLogs.length : end;
+    const showing = filterChatLogs.length ? start + 1 : 0;
+    const to = filterChatLogs.length ? (currentPage === numberOfPage ? filterChatLogs.length : end) : 0;
     const total = filterChatLogs.length;
 
     function createPageArr(page) {
@@ -67,9 +67,8 @@ function ChatLogs() {
     return (
         <div className="grid grid-cols-5 lg:grid-cols-1 md:contents">
             <Sidebar />
-            <div className="col-span-4 bg-gray-400 p-5">
+            <div className="col-span-4 bg-gray-400 p-5 min-h-screen">
                 <h1 className="text-center text-5xl font-semibold pt-5 pb-10">Chat Logs</h1>
-
                 <Filter
                     perPage={perPage}
                     handleChangePerPage={handleChangePerPage}

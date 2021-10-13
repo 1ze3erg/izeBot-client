@@ -135,16 +135,16 @@ function Timers() {
 
     const filterTimers = timers.filter((elem) => {
         return (
-            elem.command?.toLowerCase().includes(searchInput.toLowerCase()) ||
-            elem.response?.toLowerCase().includes(searchInput.toLowerCase()) ||
-            `${elem.interval / 60000}`.includes(searchInput) 
+            elem.timerName?.toLowerCase().includes(searchInput?.toLowerCase()) ||
+            elem.response?.toLowerCase().includes(searchInput?.toLowerCase()) ||
+            `${elem?.interval / 60000}`.includes(searchInput) 
         );
     });
     const numberOfPage = Math.ceil(filterTimers.length / perPage);
     const start = currentPage === 1 ? 0 : perPage * (currentPage - 1);
     const end = currentPage === 1 ? perPage : perPage * currentPage;
-    const showing = start + 1;
-    const to = currentPage === numberOfPage ? filterTimers.length : end;
+    const showing = filterTimers.length ? start + 1 : 0;
+    const to = filterTimers.length ? (currentPage === numberOfPage ? filterTimers.length : end) : 0;
     const total = filterTimers.length;
 
     function createPageArr(page) {
@@ -158,9 +158,8 @@ function Timers() {
     return (
         <div className="grid grid-cols-5 lg:grid-cols-1 md:contents">
             <Sidebar />
-            <div className="col-span-4 bg-gray-400 p-5">
+            <div className="col-span-4 bg-gray-400 p-5 min-h-screen">
                 <h1 className="text-center text-5xl font-semibold py-5">Timer</h1>
-
                 <Link to="/timer-form">
                     <button className="btn rounded-md bg-indigo-900 text-white my-5">
                         <i className="fas fa-plus"></i> Add Timer

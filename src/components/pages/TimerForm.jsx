@@ -10,7 +10,7 @@ import ErrFeedback from "../ui/ErrFeedback";
 function TimerForm() {
     const { setTimers } = useContentContext();
     const [timer, setTimer] = useState({ timerName: "", response: "", interval: "", description: "" });
-    const [err, setErr] = useState({ timerName: "", response: "", interval: "" });
+    const [err, setErr] = useState({ timerName: " ", response: " ", interval: " " });
     const history = useHistory();
 
     const handleChangeInput = (e) => {
@@ -43,7 +43,8 @@ function TimerForm() {
                 }
             });
             if (!err.timerName && !err.response && !err.interval) {
-                const newTimer = await axios.post("/timers", { ...timer, interval: `${timer.interval * 60000}` });
+                const newTimer = await axios.post("/timers", { ...timer, interval: `${timer.interval * 60000}`, status: true });
+                console.log(newTimer);
                 setTimers((currentState) => [newTimer, ...currentState]);
                 await Swal.fire({
                     position: "top-end",

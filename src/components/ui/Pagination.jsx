@@ -8,7 +8,7 @@ function Pagination(props) {
             <ul className="flex flex-wrap gap-y-1 text-center md:grid md:grid-cols-4 md:gap-px">
                 <li
                     className={`
-                            ${currentPage === 1 ? "cursor-default" : "cursor-pointer"}
+                            ${currentPage === 1 || numberOfPage === 0 ? "cursor-default" : "cursor-pointer"}
                                 hover:bg-gray-500
                                 border border-black
                                 rounded-l-md
@@ -22,7 +22,7 @@ function Pagination(props) {
                 </li>
                 <li
                     className={`
-                            ${currentPage === 1 ? "cursor-default" : "cursor-pointer"}
+                            ${currentPage === 1 || numberOfPage === 0 ? "cursor-default" : "cursor-pointer"}
                                 hover:bg-gray-500
                                 border border-black
                                 px-4
@@ -55,7 +55,7 @@ function Pagination(props) {
                 ))}
                 <li
                     className={`
-                            ${currentPage === numberOfPage ? "cursor-default" : "cursor-pointer"}
+                            ${currentPage === numberOfPage || numberOfPage === 0 ? "cursor-default" : "cursor-pointer"}
                                 hover:bg-gray-500
                                 border border-black
                                 px-4
@@ -72,7 +72,11 @@ function Pagination(props) {
                 </li>
                 <li
                     className={`
-                                ${currentPage === numberOfPage ? "cursor-default" : "cursor-pointer"}
+                                ${
+                                    currentPage === numberOfPage || numberOfPage === 0
+                                        ? "cursor-default"
+                                        : "cursor-pointer"
+                                }
                                 hover:bg-gray-500
                                 border border-black
                                 rounded-r-md

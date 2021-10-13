@@ -117,15 +117,15 @@ function CustomCommands() {
 
     const filterCustomCommands = customCommands.filter((elem) => {
         return (
-            elem.command?.toLowerCase().includes(searchInput.toLowerCase()) ||
-            elem.response?.toLowerCase().includes(searchInput.toLowerCase())
+            elem.command?.toLowerCase().includes(searchInput?.toLowerCase()) ||
+            elem.response?.toLowerCase().includes(searchInput?.toLowerCase())
         );
     });
     const numberOfPage = Math.ceil(filterCustomCommands.length / perPage);
     const start = currentPage === 1 ? 0 : perPage * (currentPage - 1);
     const end = currentPage === 1 ? perPage : perPage * currentPage;
-    const showing = start + 1;
-    const to = currentPage === numberOfPage ? filterCustomCommands.length : end;
+    const showing = filterCustomCommands.length ? start + 1 : 0;
+    const to = filterCustomCommands.length ? (currentPage === numberOfPage ? filterCustomCommands.length : end) : 0;
     const total = filterCustomCommands.length;
 
     function createPageArr(page) {
@@ -139,7 +139,7 @@ function CustomCommands() {
     return (
         <div className="grid grid-cols-5 lg:grid-cols-1 md:contents">
             <Sidebar />
-            <div className="col-span-4 bg-gray-400 p-5">
+            <div className="col-span-4 bg-gray-400 p-5 min-h-screen">
                 <h1 className="text-center text-5xl font-semibold py-5">Custom Commands</h1>
                 <Link to="/command-form">
                     <button className="btn rounded-md bg-indigo-900 text-white my-5">

@@ -1,6 +1,6 @@
 import axios from "axios";
 import Swal from "sweetalert2";
-import { getToken, removeToken } from "../helpers/localStorage";
+import { getToken, removeAvatar, removeToken, removeDisplayName } from "../helpers/localStorage";
 import { API_URL } from "./env";
 
 axios.defaults.baseURL = API_URL;
@@ -22,16 +22,18 @@ axios.interceptors.response.use(
     (err) => {
         if (err.response && err.response.status === 401) {
             removeToken();
+            removeAvatar();
+            removeDisplayName()
             window.location.reload();
             return;
         }
         if (err.response && err.response.status === 400) {
-            console.dir(err);
             Swal.fire({
                 icon: "error",
                 title: "Error...",
                 text: err.response?.data?.msg,
             });
+            return;
         }
         return Promise.reject(err);
     }

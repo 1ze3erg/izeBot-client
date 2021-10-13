@@ -1,7 +1,7 @@
 import axios from "../../config/axios";
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { tryBotCommand } from "../../helpers/izeBot";
+import { defaultCommand } from "../../helpers/izeBot";
 import Chat from "../ui/Chat";
 
 function TryBot() {
@@ -27,7 +27,7 @@ function TryBot() {
 
         const [text, option] = inputMessage.split(" ");
 
-        let botMessage = tryBotCommand[text.toLowerCase()];
+        let botMessage = defaultCommand[text.toLowerCase()];
         console.log(botMessage);
 
         if (botMessage.type === "api") {

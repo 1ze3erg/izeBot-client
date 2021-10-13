@@ -51,8 +51,8 @@ function DefaultCommands() {
     const numberOfPage = Math.ceil(filterDefaultCommands.length / perPage);
     const start = currentPage === 1 ? 0 : perPage * (currentPage - 1);
     const end = currentPage === 1 ? perPage : perPage * currentPage;
-    const showing = start + 1;
-    const to = currentPage === numberOfPage ? filterDefaultCommands.length : end;
+    const showing = filterDefaultCommands.length ? start + 1 : 0;
+    const to = filterDefaultCommands.length ? (currentPage === numberOfPage ? filterDefaultCommands.length : end) : 0;
     const total = filterDefaultCommands.length;
 
     function createPageArr(page) {
@@ -66,7 +66,7 @@ function DefaultCommands() {
     return (
         <div className="grid grid-cols-5 lg:grid-cols-1 md:contents">
             <Sidebar />
-            <div className="col-span-4 bg-gray-400 p-5">
+            <div className="col-span-4 bg-gray-400 p-5 min-h-screen">
                 <h1 className="text-center text-5xl font-semibold pt-5 pb-10">Default Commands</h1>
                 <Filter
                     perPage={perPage}
